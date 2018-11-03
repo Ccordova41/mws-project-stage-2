@@ -1,3 +1,5 @@
+import dbPromise from './dbpromise';
+
 /**
  * Common database helper functions.
  */
@@ -15,10 +17,10 @@ export default class DBHelper {
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */
-  // static get DATABASE_URL() {
-  //   const port = 8000 // Change this to your server port
-  //   return `http://localhost:${port}/data/restaurants.json`;
-  // }
+  static get DATABASE_URL() {
+    const port = 8000 // Change this to your server port
+    return `http://localhost:${port}/data/restaurants.json`;
+  }
 
   /**
    * Fetch all restaurants.
@@ -29,6 +31,7 @@ export default class DBHelper {
     xhr.onload = () => {
       if (xhr.status === 200) { // Got a success response from server!
         const restaurants = JSON.parse(xhr.responseText);
+        dbPromise.putRestaurants(restaurants);
         callback(null, restaurants);
       } else { // Oops!. Got an error from server.
         const error = (`Request failed. Returned status of ${xhr.status}`);
