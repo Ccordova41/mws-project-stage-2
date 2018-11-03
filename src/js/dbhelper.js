@@ -3,25 +3,32 @@
  */
 export default class DBHelper {
 
+/**
+  *API url
+  */
+  static get API_URL() {
+    const port = 1337; //port where sails server will listen.
+    return `http://localhost:${port}`;
+  }
+
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */
-  static get DATABASE_URL() {
-    const port = 8000 // Change this to your server port
-    return `http://localhost:${port}/data/restaurants.json`;
-  }
+  // static get DATABASE_URL() {
+  //   const port = 8000 // Change this to your server port
+  //   return `http://localhost:${port}/data/restaurants.json`;
+  // }
 
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
+    xhr.open('GET', `${DBHelper.API_URL}/restaurants`);
     xhr.onload = () => {
       if (xhr.status === 200) { // Got a success response from server!
-        const json = JSON.parse(xhr.responseText);
-        const restaurants = json.restaurants;
+        const restaurants = JSON.parse(xhr.responseText);
         callback(null, restaurants);
       } else { // Oops!. Got an error from server.
         const error = (`Request failed. Returned status of ${xhr.status}`);
