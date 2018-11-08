@@ -15,7 +15,6 @@ var urlsToCache = [
   '/img/8-large.jpg', '/img/8-medium.jpg', '/img/8-small.jpg',
   '/img/9-large.jpg', '/img/9-medium.jpg', '/img/9-small.jpg',
   '/img/10-large.jpg', '/img/10-medium.jpg', '/img/10-small.jpg',
-  // '/data/restaurants.json',
 ];
 
 self.addEventListener('install', function(event) {
