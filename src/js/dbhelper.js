@@ -17,49 +17,49 @@ export default class DBHelper {
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */
-  static get DATABASE_URL() {
-    const port = 8000 // Change this to your server port
-    return `http://localhost:${port}/data/restaurants.json`;
-  }
+  // static get DATABASE_URL() {
+  //   const port = 8000 // Change this to your server port
+  //   return `http://localhost:${port}/data/restaurants.json`;
+  // }
 
   /**
-   * Fetch all restaurants.
-   */
-   static fetchRestaurants(callback) {
-     let xhr = new XMLHttpRequest();
-     xhr.open('GET', `${DBHelper.API_URL}/restaurants`);
-     xhr.onload = () => {
-       if (xhr.status === 200) { // Got a success response from server!
-         const restaurants = JSON.parse(xhr.responseText);
-         dbPromise.putRestaurants(restaurants);
-         callback(null, restaurants);
-       } else { // Oops!. Got an error from server.
-         console.log(`Request failed. Returned status of ${xhr.status}, trying idb...`);
-         // if xhr request isn't code 200, try idb
-         dbPromise.getRestaurants().then(idbRestaurants => {
-           // if we get back more than 1 restaurant from idb, return idbRestaurants
-           if (idbRestaurants.length > 0) {
-             callback(null, idbRestaurants)
-           } else { // if we got back 0 restaurants return an error
-             callback('No restaurants found in idb', null);
+     * Fetch all restaurants.
+     */
+     static fetchRestaurants(callback) {
+         let xhr = new XMLHttpRequest();
+         xhr.open('GET', `${DBHelper.API_URL}/restaurants`);
+         xhr.onload = () => {
+           if (xhr.status === 200) { // Got a success response from server!
+             const restaurants = JSON.parse(xhr.responseText);
+             dbPromise.putRestaurants(restaurants);
+             callback(null, restaurants);
+           } else { // Oops!. Got an error from server.
+             console.log(`Request failed. Returned status of ${xhr.status}, trying idb...`);
+             // if xhr request isn't code 200, try idb
+             dbPromise.getRestaurants().then(idbRestaurants => {
+               // if we get back more than 1 restaurant from idb, return idbRestaurants
+               if (idbRestaurants.length > 0) {
+                 callback(null, idbRestaurants)
+               } else { // if we got back 0 restaurants return an error
+                 callback('No restaurants found in idb', null);
+               }
+             });
            }
-         });
-       }
-     };
-     // XHR needs error handling for when server is down (doesn't respond or sends back codes)
-     xhr.onerror = () => {
-       console.log('Error while trying XHR, trying idb...');
-       // try idb, and if we get restaurants back, return them, otherwise return an error
-       dbPromise.getRestaurants().then(idbRestaurants => {
-         if (idbRestaurants.length > 0) {
-           callback(null, idbRestaurants)
-         } else {
-           callback('No restaurants found in idb', null);
+         };
+         // XHR needs error handling for when server is down (doesn't respond or sends back codes)
+         xhr.onerror = () => {
+           console.log('Error while trying XHR, trying idb...');
+           // try idb, and if we get restaurants back, return them, otherwise return an error
+           dbPromise.getRestaurants().then(idbRestaurants => {
+             if (idbRestaurants.length > 0) {
+               callback(null, idbRestaurants)
+             } else {
+               callback('No restaurants found in idb', null);
+             }
+           });
          }
-       });
-     }
-     xhr.send();
-   }
+      xhr.send();
+    }
 
   /**
    * Fetch a restaurant by its ID.
@@ -81,7 +81,6 @@ export default class DBHelper {
          });
        });
      }
-
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
    */
