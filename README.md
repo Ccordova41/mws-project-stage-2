@@ -19,3 +19,6 @@ Let's get started!!!
 
 ## License
 Copyright (c) 2018 Catherine Cordova | Check out the full license [here!](https://github.com/Ccordova41/mws-restaurant-stage-1/blob/master/LICENSE)
+
+## Followed walkthough provided by Alexander Perez
+https://alexandroperez.github.io/mws-walkthrough/?2.2.gulp-with-watchify-browserify-and-browsersync
