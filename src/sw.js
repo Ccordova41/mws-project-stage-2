@@ -1,4 +1,4 @@
-var CACHE_NAME = 'my-site-cache-v1';
+var CACHE_NAME = 'my-site-cache-v2';
 var urlsToCache = [
   '/',
   '/restaurant.html',
@@ -15,6 +15,14 @@ var urlsToCache = [
   '/img/8-large.jpg', '/img/8-medium.jpg', '/img/8-small.jpg',
   '/img/9-large.jpg', '/img/9-medium.jpg', '/img/9-small.jpg',
   '/img/10-large.jpg', '/img/10-medium.jpg', '/img/10-small.jpg',
+  'images/icons/icon-72x72.png',
+  'images/icons/icon-96x96.png',
+  'images/icons/icon-128x128.png',
+  'images/icons/icon-144x144.png',
+  'images/icons/icon-152x152.png',
+  'images/icons/icon-192x192.png',
+  'images/icons/icon-384x384.png',
+  'images/icons/icon-512x512.png'
 ];
 
 self.addEventListener('install', function(event) {
