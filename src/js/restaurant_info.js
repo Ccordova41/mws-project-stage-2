@@ -2,7 +2,7 @@ import DBHelper from "./dbhelper";
 import SECRET from "./secret";
 // import './register';
 import favoriteButton from './favorite-button';
-
+import reviewForm from './review-form';
 
 let restaurant;
 var newMap;
@@ -152,25 +152,31 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
-  const container = document.getElementById('reviews-container');
-  const title = document.createElement('h3');
-  title.innerHTML = 'Reviews';
-  container.appendChild(title);
+ // Refactor fillReviewsHTML method, so it appends our form
+ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+   const container = document.getElementById('reviews-container');
+   const title = document.createElement('h2');
+   title.innerHTML = 'Reviews';
+   container.appendChild(title);
 
-  if (!reviews) {
-    const noReviews = document.createElement('p');
-    noReviews.innerHTML = 'No reviews yet!';
-    container.appendChild(noReviews);
-    return;
-  }
-  const ul = document.getElementById('reviews-list');
-  reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
-  });
-  container.appendChild(ul);
-}
+   if (!reviews) {
+     const noReviews = document.createElement('p');
+     noReviews.innerHTML = 'No reviews yet!';
+     container.appendChild(noReviews);
+   } else {
+     const ul = document.getElementById('reviews-list');
+     reviews.forEach(review => {
+       ul.appendChild(createReviewHTML(review));
+     });
+     container.appendChild(ul);
+   }
 
+   const h3 = document.createElement('h3');
+   h3.innerHTML = "Leave a Review";
+   container.appendChild(h3);
+   const id = getParameterByName('id');
+   container.appendChild(reviewForm(id));
+ }
 /**
  * Create review HTML and add it to the webpage.
  */
@@ -190,7 +196,6 @@ const createReviewHTML = (review) => {
   li.appendChild(date);
   date.setAttribute("id", "date");
   date.setAttribute("tabindex", "0");
-
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
