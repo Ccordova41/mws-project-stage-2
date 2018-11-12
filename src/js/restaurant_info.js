@@ -19,7 +19,7 @@ const initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
       console.error(error);
-    } else {      
+    } else {
       if (navigator.onLine) {
         try {
           newMap = L.map('map', {
@@ -33,7 +33,7 @@ const initMap = () => {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
               '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
               'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            id: 'mapbox.streets'    
+            id: 'mapbox.streets'
           }).addTo(newMap);
           DBHelper.mapMarkerForRestaurant(self.restaurant, newMap);
         } catch(error) {
@@ -45,7 +45,7 @@ const initMap = () => {
         //  If app detects we're offline, set map as offline
         DBHelper.mapOffline();
       }
-      
+
       fillBreadcrumb();
     }
   });
@@ -98,33 +98,31 @@ const fetchRestaurantFromURL = (callback) => {
 /**
  * Create restaurant HTML and add it to the webpage
  */
-const fillRestaurantHTML = (restaurant = self.restaurant) => {
-  const name = document.getElementById('restaurant-name');
-  name.innerHTML = restaurant.name;
-  name.setAttribute("tabindex", "0");
+ const fillRestaurantHTML = (restaurant = self.restaurant) => {
+   const name = document.getElementById('restaurant-name');
+   name.innerHTML = restaurant.name;
 
-  const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  image.srcset = DBHelper.imageSrcsetForRestaurant(restaurant);
-  image.sizes = DBHelper.imageSizesForRestaurant(restaurant);
-  image.alt = 'Image of ' + restaurant.name;
+   const address = document.getElementById('restaurant-address');
+   address.innerHTML = restaurant.address;
 
-  const cuisine = document.getElementById('restaurant-cuisine');
-  cuisine.innerHTML = restaurant.cuisine_type;
-  cuisine.setAttribute("tabindex", "0");
+   const image = document.getElementById('restaurant-img');
+   image.className = 'restaurant-img'
+   image.alt = `Picture of ${restaurant.name}`;
+   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+   image.srcset = DBHelper.imageSrcsetForRestaurant(restaurant);
+   image.sizes = DBHelper.imageSizesForRestaurant(restaurant);
 
-  const address = document.getElementById('restaurant-address');
-  address.innerHTML = restaurant.address;
-  address.setAttribute("tabindex", "0");
+   const cuisine = document.getElementById('restaurant-cuisine');
+   cuisine.innerHTML = restaurant.cuisine_type;
 
-  // fill operating hours
-  if (restaurant.operating_hours) {
-    fillRestaurantHoursHTML();
-  }
-  // fill reviews
-  fillReviewsHTML();
-}
+   // fill operating hours
+   if (restaurant.operating_hours) {
+     fillRestaurantHoursHTML();
+   }
+   // fill reviews
+   DBHelper.fetchReviewsByRestaurantId(restaurant.id)
+     .then(fillReviewsHTML);
+ }
 
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
@@ -182,7 +180,8 @@ const createReviewHTML = (review) => {
 
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = new Date(review.createdAt).toLocaleDateString();
+  // date.innerHTML = review.date;
   li.appendChild(date);
   date.setAttribute("id", "date");
   date.setAttribute("tabindex", "0");
