@@ -1,6 +1,6 @@
 import DBHelper from "./dbhelper";
 import SECRET from "./secret";
-// import './register';
+import './register';
 import favoriteButton from './favorite-button';
 import reviewForm from './review-form';
 
@@ -100,35 +100,30 @@ const fetchRestaurantFromURL = (callback) => {
 /**
  * Create restaurant HTML and add it to the webpage
  */
- const fillRestaurantHTML = (restaurant = self.restaurant) => {
-   const name = document.getElementById('restaurant-name');
-   name.innerHTML = restaurant.name;
+ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+   const container = document.getElementById('reviews-container');
+   const title = document.createElement('h2');
+   title.innerHTML = 'Reviews';
+   container.appendChild(title);
 
-   const favButtonContainer = document.getElementById('fav-button-container');
-   favButtonContainer.append( favoriteButton(restaurant) );
-
-   const address = document.getElementById('restaurant-address');
-   address.innerHTML = restaurant.address;
-
-   const image = document.getElementById('restaurant-img');
-   image.className = 'restaurant-img'
-   image.alt = `Picture of ${restaurant.name}`;
-   image.src = DBHelper.imageUrlForRestaurant(restaurant);
-   image.srcset = DBHelper.imageSrcsetForRestaurant(restaurant);
-   image.sizes = DBHelper.imageSizesForRestaurant(restaurant);
-
-   const cuisine = document.getElementById('restaurant-cuisine');
-   cuisine.innerHTML = restaurant.cuisine_type;
-
-   // fill operating hours
-   if (restaurant.operating_hours) {
-     fillRestaurantHoursHTML();
+   if (!reviews) {
+     const noReviews = document.createElement('p');
+     noReviews.innerHTML = 'No reviews yet!';
+     container.appendChild(noReviews);
+   } else {
+     const ul = document.getElementById('reviews-list');
+     reviews.forEach(review => {
+       ul.appendChild(createReviewHTML(review));
+     });
+     container.appendChild(ul);
    }
-   // fill reviews
-   DBHelper.fetchReviewsByRestaurantId(restaurant.id)
-     .then(fillReviewsHTML);
- }
 
+   const h3 = document.createElement('h3');
+   h3.innerHTML = "Leave a Review";
+   container.appendChild(h3);
+   const id = getParameterByName('id');
+   container.appendChild(reviewForm(id));
+ }
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */

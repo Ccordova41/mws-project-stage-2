@@ -2,13 +2,18 @@ import idb from 'idb';
 
 const dbPromise = {
   // creation and updating of database happens here.
-  db: idb.open('restaurant-reviews-db', 2, function (upgradeDb) {
+  db: idb.open('restaurant-reviews-db', 3, function (upgradeDb) {
     switch (upgradeDb.oldVersion) {
       case 0:
         upgradeDb.createObjectStore('restaurants', { keyPath: 'id' });
       case 1:
         upgradeDb.createObjectStore('reviews', { keyPath: 'id' })
         .createIndex('restaurant_id', 'restaurant_id');
+      case 3:
+        upgradeDb.createObjectStore('offline-favorites', { keyPath: 'id'})
+        .createIndex('restaurant_id', 'isfavorite');
+      case 4:
+        upgradeDb.createObjectStore('offline-reviews', {autoIncrement: true})
       }
   }),
 
@@ -72,6 +77,10 @@ const dbPromise = {
       return storeIndex.getAll(Number(id));
     });
   },
+
+  // syncFavorites() {
+  //   dbPromise.getRestaurants()
+  // }
 };
 
 export default dbPromise;

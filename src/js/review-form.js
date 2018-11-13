@@ -161,7 +161,7 @@ export default function reviewForm(restaurantId) {
   addButton.setAttribute('type', 'submit');
   addButton.setAttribute('aria-label', 'Add Review');
   addButton.classList.add('add-review');
-  addButton.innerHTML = "<span>Submit</span>";
+  addButton.innerHTML = "<span>+</span>";
   p.appendChild(addButton);
   form.appendChild(p);
 
