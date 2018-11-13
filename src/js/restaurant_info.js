@@ -5,7 +5,6 @@ import favoriteButton from './favorite-button';
 import reviewForm from './review-form';
 
 let restaurant;
-let reviews;
 var newMap;
 
 /**
@@ -178,7 +177,7 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
    container.appendChild(reviewForm(id));
  }
 
- /**
+/**
  * Create review HTML and add it to the webpage.
  */
 const createReviewHTML = (review) => {
