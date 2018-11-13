@@ -175,9 +175,8 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 /**
  * Create restaurant HTML.
  */
-const createRestaurantHTML = (restaurant) => {
+ const createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
-
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
@@ -189,7 +188,7 @@ const createRestaurantHTML = (restaurant) => {
 
   const favButton = favoriteButton(restaurant);
   li.append(favButton);
-  
+
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   li.append(name);

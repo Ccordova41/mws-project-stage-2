@@ -5,6 +5,7 @@ import favoriteButton from './favorite-button';
 import reviewForm from './review-form';
 
 let restaurant;
+// let reviews;
 var newMap;
 
 /**
@@ -152,7 +153,6 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 /**
  * Create all reviews HTML and add them to the webpage.
  */
- // Refactor fillReviewsHTML method, so it appends our form
  const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
    const container = document.getElementById('reviews-container');
    const title = document.createElement('h2');
@@ -177,7 +177,8 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
    const id = getParameterByName('id');
    container.appendChild(reviewForm(id));
  }
-/**
+
+ /**
  * Create review HTML and add it to the webpage.
  */
 const createReviewHTML = (review) => {
@@ -197,10 +198,11 @@ const createReviewHTML = (review) => {
   date.setAttribute("id", "date");
   date.setAttribute("tabindex", "0");
 
+
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
   li.appendChild(rating);
-  rating.setAttribute("id", "rating");
+  // rating.setAttribute("id", "rating");
   rating.setAttribute("tabindex", "0");
 
   const comments = document.createElement('p');

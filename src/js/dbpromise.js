@@ -1,19 +1,21 @@
 import idb from 'idb';
 
 const dbPromise = {
-  // creation and updating of database happens here.
-  db: idb.open('restaurant-reviews-db', 2, function (upgradeDb) {
+  db: idb.open('restaurant-reviews-db', 2, function(upgradeDb) {
     switch (upgradeDb.oldVersion) {
       case 0:
         upgradeDb.createObjectStore('restaurants', { keyPath: 'id' });
       case 1:
         upgradeDb.createObjectStore('reviews', { keyPath: 'id' })
-        .createIndex('restaurant_id', 'restaurant_id');
-      }
+          .createIndex('restaurant_id', 'restaurant_id');
+      // case 2:
+      //   upgradeDb.createObjectStore('favorite', { keyPath: 'restaurant_id' });
+    }
   }),
 
   /**
-   * Save a restaurant or array of restaurants into idb, using promises.
+   * Save a restaurant or array of restaurants into idb, using promises. If second argument
+   * is passed a boolean true, data will be forcibly updated.
    */
   putRestaurants(restaurants, forceUpdate = false) {
     if (!restaurants.push) restaurants = [restaurants];
@@ -23,7 +25,7 @@ const dbPromise = {
         return store.get(networkRestaurant.id).then(idbRestaurant => {
           if (forceUpdate) return store.put(networkRestaurant);
           if (!idbRestaurant || new Date(networkRestaurant.updatedAt) > new Date(idbRestaurant.updatedAt)) {
-          return store.put(networkRestaurant);
+            return store.put(networkRestaurant);
           }
         });
       })).then(function () {
@@ -72,6 +74,7 @@ const dbPromise = {
       return storeIndex.getAll(Number(id));
     });
   },
+
 };
 
 export default dbPromise;

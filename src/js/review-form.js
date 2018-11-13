@@ -52,14 +52,13 @@ function validateAndGetData() {
   data.name = name.value;
 
   // get rating
-  // const ratingSelect = document.getElementById('rating');
-  // const rating = ratingSelect.options[ratingSelect.selectedIndex].value;
-  let rating = document.getElementById('rating').value;
-    // if (rating == "--") {
-      // rating.focus();
-      // return;
-    // }
-    data.rating = Number(rating);
+  const ratingSelect = document.getElementById('rating');
+  const rating = ratingSelect.options[ratingSelect.selectedIndex].value;
+  if (rating == "--") {
+    ratingSelect.focus();
+    return;
+  }
+  data.rating = Number(rating);
 
   // get comments
   let comments = document.getElementById('comments');
@@ -138,11 +137,11 @@ export default function reviewForm(restaurantId) {
   select.id = "rating";
   select.name = "rating";
   select.classList.add('rating');
-  [1,2,3,4,5].forEach(number => {
+  ["--", 1,2,3,4,5].forEach(number => {
     const option = document.createElement('option');
     option.value = number;
     option.innerHTML = number;
-    // if (number === "--") option.selected = true;
+    if (number === "--") option.selected = true;
     select.appendChild(option);
   });
   p.appendChild(select);
