@@ -7,6 +7,14 @@ import dbPromise from "./dbpromise";
  */
 function createReviewHTML(review) {
   const li = document.createElement('li');
+  if (!navigator.onLine) {
+   const connection_status = document.createElement('p');
+   connection_status.classList.add('offline_label');
+   connection_status.innerHTML = 'Offline'
+   li.classList.add('reviews_offline')
+   li.appendChild(connection_status);
+  }
+
   const name = document.createElement('p');
   name.innerHTML = review.name;
   li.appendChild(name);
@@ -78,15 +86,54 @@ function validateAndGetData() {
   return data;
 }
 
+
+function sendDataWhenOnline(offline_obj) {
+       // console.log(Object.values(offline_obj));
+       const offlineReview = offline_obj.data;
+       // console.log(offlineReview);
+       // scheme for storing values in arrays in local storage given in https://stackoverflow.com/questions/40843773/localstorage-keeps-overwriting-my-data
+       let revHistory = JSON.parse(localStorage.getItem('reviewsWaitHere')) || [];
+       revHistory.push(offlineReview);
+       localStorage.setItem('reviewsWaitHere', JSON.stringify(revHistory));
+
+       window.addEventListener('online', (event) => {
+         // console.log('online again!');
+         let retrievedReviews = localStorage.getItem('reviewsWaitHere');
+         retrievedReviews = JSON.parse(retrievedReviews);
+         // console.log(`${typeof retrievedReviews} ${retrievedReviews}`);
+         [...document.querySelectorAll(".reviews_offline")]
+         .forEach(el => {
+           el.classList.remove('reviews_offline');
+           el.querySelector('.offline_label').remove();
+         });
+         if (retrievedReviews !== null && retrievedReviews.length > 0) {
+           // console.log(retrievedReviews);
+           for (const retrievedReview of retrievedReviews) {
+             DBHelper.postReview(retrievedReview);
+           }
+          localStorage.removeItem('reviewsWaitHere');
+         }
+       });
+     }
+
+
+
 /**
  * Handle submit.
  */
+
 function handleSubmit(e) {
   e.preventDefault();
   const review = validateAndGetData();
   if (!review) return;
 
   console.log(review);
+  let offline_obj = {
+         name: 'addReview',
+         // key: newReview.id;
+         data: newReview,
+         object_type: 'review'
+         }
 
   const url = `${DBHelper.API_URL}/reviews/`;
   const POST = {
@@ -161,7 +208,7 @@ export default function reviewForm(restaurantId) {
   addButton.setAttribute('type', 'submit');
   addButton.setAttribute('aria-label', 'Add Review');
   addButton.classList.add('add-review');
-  addButton.innerHTML = "<span>+</span>";
+  addButton.innerHTML = "<span>Submit</span>";
   p.appendChild(addButton);
   form.appendChild(p);
 
