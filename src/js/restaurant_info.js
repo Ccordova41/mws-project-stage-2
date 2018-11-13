@@ -1,11 +1,11 @@
 import DBHelper from "./dbhelper";
 import SECRET from "./secret";
-import './register';
+// import './register';
 import favoriteButton from './favorite-button';
 import reviewForm from './review-form';
 
 let restaurant;
-// let reviews;
+let reviews;
 var newMap;
 
 /**

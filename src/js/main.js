@@ -1,6 +1,6 @@
 import DBHelper from "./dbhelper";
 import SECRET from "./secret";
-import './register';
+// import './register';
 import favoriteButton from './favorite-button';
 
 let restaurants,
@@ -175,8 +175,9 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 /**
  * Create restaurant HTML.
  */
- const createRestaurantHTML = (restaurant) => {
+const createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
+
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);

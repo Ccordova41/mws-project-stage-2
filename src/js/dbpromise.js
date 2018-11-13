@@ -8,8 +8,6 @@ const dbPromise = {
       case 1:
         upgradeDb.createObjectStore('reviews', { keyPath: 'id' })
           .createIndex('restaurant_id', 'restaurant_id');
-      // case 2:
-      //   upgradeDb.createObjectStore('favorite', { keyPath: 'restaurant_id' });
     }
   }),
 

@@ -5,13 +5,6 @@ function handleClick() {
   const restaurantId = this.dataset.id;
   const fav = this.getAttribute('aria-pressed') == 'true';
   const url = `${DBHelper.API_URL}/restaurants/${restaurantId}/?is_favorite=${!fav}`;
-  let offline_fav = {
-         name: 'changeFav',
-         data: url,
-         object_type: 'favStatus'
-         }
-
-
   const PUT = {method: 'PUT'};
 
   // TODO: use Background Sync to sync data with API server
