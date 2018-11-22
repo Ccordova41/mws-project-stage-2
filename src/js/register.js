@@ -1,4 +1,4 @@
-Service Worker Added
+// Service Worker Added
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').then(function(registration) {
     // Registration was successful
@@ -8,7 +8,7 @@ if ('serviceWorker' in navigator) {
     console.log('ServiceWorker registration failed: ', err);
   });
 }
-//Added Background Sync 
+//Added Background Sync
 
 // if ('serviceWorker' in navigator && 'SyncManager' in window) {
 //   navigator.serviceWorker.ready.then(function(reg) {
